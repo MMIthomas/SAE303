@@ -84,7 +84,7 @@ function createSolverPerformanceChart(data) {
           label: "Temps moyen (s)",
           data: avgTimes.map((d) => d.avgTime),
           backgroundColor: "#452829",
-          borderColor: "#452829",
+          borderColor: "#57595B",
           borderWidth: 1,
         },
       ],
@@ -95,7 +95,7 @@ function createSolverPerformanceChart(data) {
         title: {
           display: true,
           text: "Temps moyen de résolution par solveur",
-          color: "#020202",
+          color: "#452829",
         },
         legend: { display: false },
       },
@@ -135,7 +135,7 @@ function createStatusDistributionChart(data) {
         title: {
           display: true,
           text: "Répartition des résultats",
-          color: "#020202",
+          color: "#452829",
         },
         legend: { position: "bottom" },
       },
@@ -179,7 +179,7 @@ function createSolverSuccessRateChart(data) {
         title: {
           display: true,
           text: "Taux de résolution par solveur (%)",
-          color: "#020202",
+          color: "#452829",
         },
         legend: { position: "bottom" },
       },
@@ -334,7 +334,7 @@ function createFamilyRadarChart(data) {
   });
 
   const ctx = document.getElementById("familyRadarChart").getContext("2d");
-  const colors = ["#452829", "#57595B", "#E8D1C5", "#4CAF50"];
+  const colors = ["#452829", "#57595B", "#E8D1C5", "#d4b5a4"];
 
   new Chart(ctx, {
     type: "radar",
@@ -354,7 +354,7 @@ function createFamilyRadarChart(data) {
         title: {
           display: true,
           text: "Performance par famille de problèmes",
-          color: "#020202",
+          color: "#452829",
         },
         legend: { position: "bottom" },
       },
