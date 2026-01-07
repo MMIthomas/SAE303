@@ -290,13 +290,17 @@ function createComplexityTimeChart(data) {
   const tooltip = d3
     .select("body")
     .append("div")
-    .attr("class", "tooltip")
+    .attr("class", "scatter-tooltip")
     .style("position", "absolute")
     .style("background", "#fff")
-    .style("border", "1px solid #ccc")
+    .style("border", "1px solid var(--color-accent)")
     .style("padding", "8px")
     .style("border-radius", "4px")
-    .style("display", "none");
+    .style("box-shadow", "0 2px 8px rgba(69, 40, 41, 0.15)")
+    .style("display", "none")
+    .style("pointer-events", "none")
+    .style("z-index", "9999")
+    .style("font-family", "'Outfit', sans-serif");
 
   svg
     .selectAll("circle")
@@ -322,11 +326,31 @@ function createComplexityTimeChart(data) {
         .attr("r", 6)
         .attr("opacity", 1);
 
-      tooltip
-        .style("display", "block")
-        .html(
-          `<strong>${d.name}</strong><br>Famille: ${d.family}<br>Variables: ${d.nb_variables}<br>Temps: ${d.time}s`
-        );
+      tooltip.style("display", "block").html(
+        `<div style="padding: 4px;">
+            <strong style="color: ${colorScale(d.name)}; font-size: 14px;">${
+          d.name
+        }</strong>
+            <hr style="margin: 4px 0; border-color: #ddd;">
+            <div style="font-size: 12px;">
+              <strong>Famille:</strong> ${d.family}<br>
+              <strong>Statut:</strong> <span style="color: ${
+                d.status === "SAT"
+                  ? "#4CAF50"
+                  : d.status === "UNSAT"
+                  ? "#EF5350"
+                  : "#9E9E9E"
+              }">${d.status}</span><br>
+              <strong>Variables:</strong> ${parseInt(
+                d.nb_variables
+              ).toLocaleString()}<br>
+              <strong>Clauses:</strong> ${parseInt(
+                d.nb_clauses
+              ).toLocaleString()}<br>
+              <strong>Temps:</strong> ${parseFloat(d.time).toFixed(2)}s
+            </div>
+          </div>`
+      );
     })
     .on("mousemove", (event) => {
       tooltip
@@ -512,6 +536,49 @@ function createSolverFamilyHeatmap(data) {
         .attr("opacity", 0.8)
         .attr("stroke", "#452829")
         .attr("stroke-width", 2);
+
+      const tooltip = d3
+        .select("body")
+        .append("div")
+        .attr("class", "heatmap-tooltip")
+        .style("position", "absolute")
+        .style("background", "#fff")
+        .style("border", "1px solid var(--color-accent)")
+        .style("padding", "8px")
+        .style("border-radius", "4px")
+        .style("box-shadow", "0 2px 8px rgba(69, 40, 41, 0.15)")
+        .style("pointer-events", "none")
+        .style("z-index", "1000")
+        .style("left", event.pageX + 10 + "px")
+        .style("top", event.pageY - 10 + "px")
+        .html(
+          `<div style="padding: 4px;">
+            <strong style="color: var(--color-primary); font-size: 14px;">${
+              d.solver
+            }</strong>
+            <hr style="margin: 4px 0; border-color: #ddd;">
+            <div style="font-size: 12px;">
+              <strong>Famille:</strong> ${d.family}<br>
+              <strong>Temps moyen:</strong> ${
+                d.value !== null ? parseFloat(d.value).toFixed(2) + "s" : "N/A"
+              }<br>
+              <strong>Performance:</strong> <span style="color: ${
+                d.value < 100
+                  ? "#4CAF50"
+                  : d.value < 500
+                  ? "#FFA726"
+                  : "#EF5350"
+              }">${
+            d.value < 100 ? "Excellente" : d.value < 500 ? "Bonne" : "Moyenne"
+          }</span>
+            </div>
+          </div>`
+        );
+    })
+    .on("mousemove", function (event) {
+      d3.select(".heatmap-tooltip")
+        .style("left", event.pageX + 10 + "px")
+        .style("top", event.pageY - 10 + "px");
     })
     .on("mouseout", function () {
       d3.select(this)
@@ -519,6 +586,8 @@ function createSolverFamilyHeatmap(data) {
         .duration(200)
         .attr("opacity", 1)
         .attr("stroke", "none");
+
+      d3.select(".heatmap-tooltip").remove();
     });
 }
 
