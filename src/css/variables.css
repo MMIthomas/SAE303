@@ -6,4 +6,9 @@
   --color-accent: #E8D1C5;
   --color-background: #F3E8DF;
   --color-foreground: #020202;
+  
+  /* Status colors */
+  --color-success: #66BB6A;
+  --color-danger: #EF5350;
+  --color-warning: #d4b5a4;
 }

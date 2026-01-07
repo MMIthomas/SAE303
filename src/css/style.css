@@ -89,15 +89,15 @@ h1, h2, h3, h4, h5, h6, p, span:not(.material-icons), a, button {
 }
 
 .icon.bg-gradient-success {
-  background: #66BB6A;
+  background: var(--color-success);
 }
 
 .icon.bg-gradient-danger {
-  background: #EF5350;
+  background: var(--color-danger);
 }
 
 .icon.bg-gradient-warning {
-  background: #d4b5a4;
+  background: var(--color-warning);
 }
 
 .text-primary {
