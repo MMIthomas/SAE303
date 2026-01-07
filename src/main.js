@@ -66,7 +66,7 @@ function getSuccessRateBySolver(data) {
   }));
 }
 
-// Performance par solveur (Bar Chart)
+// Performance par solveur
 function createSolverPerformanceChart(data) {
   const avgTimes = getAverageTimeBySolver(data).sort(
     (a, b) => a.avgTime - b.avgTime
@@ -114,7 +114,7 @@ function createSolverPerformanceChart(data) {
   });
 }
 
-// Répartition des statuts (Doughnut)
+// Répartition des statuts
 function createStatusDistributionChart(data) {
   const counts = getStatusCounts(data);
   const ctx = document
@@ -155,7 +155,7 @@ function createStatusDistributionChart(data) {
   });
 }
 
-// Taux de succès par solveur (Stacked Bar)
+// Taux de succès par solveur
 function createSolverSuccessRateChart(data) {
   const rates = getSuccessRateBySolver(data);
   const ctx = document
@@ -209,7 +209,7 @@ function createSolverSuccessRateChart(data) {
   });
 }
 
-// Complexité vs Temps (D3.js Scatter Plot)
+// Complexité vs Temps
 function createComplexityTimeChart(data) {
   const container = d3.select("#complexityTimeChart");
   const width = container.node().getBoundingClientRect().width;
@@ -289,16 +289,16 @@ function createComplexityTimeChart(data) {
     .append("circle")
     .attr("cx", (d) => xScale(parseFloat(d.nb_variables)))
     .attr("cy", (d) => yScale(parseFloat(d.time) || 0.1))
-    .attr("r", 0) // Start with radius 0
+    .attr("r", 0)
     .attr("fill", (d) => colorScale(d.name))
-    .attr("opacity", 0) // Start invisible
-    .transition() // Add animation
+    .attr("opacity", 0)
+    .transition()
     .duration(1500)
-    .delay((d, i) => i * 3) // Stagger animation
+    .delay((d, i) => i * 3)
     .ease(d3.easeCubicOut)
-    .attr("r", 4) // Animate to final radius
-    .attr("opacity", 0.7) // Animate to final opacity
-    .selection() // Return to selection for event handlers
+    .attr("r", 4)
+    .attr("opacity", 0.7)
+    .selection()
     .on("mouseover", (event, d) => {
       d3.select(event.currentTarget)
         .transition()
@@ -408,7 +408,7 @@ function createFamilyRadarChart(data) {
   });
 }
 
-// Heatmap Solveur vs Famille (D3.js)
+// Heatmap Solveur vs Famille
 function createSolverFamilyHeatmap(data) {
   const container = d3.select("#solverFamilyHeatmap");
   const width = container.node().getBoundingClientRect().width;
@@ -482,13 +482,13 @@ function createSolverFamilyHeatmap(data) {
     .attr("width", xScale.bandwidth())
     .attr("height", yScale.bandwidth())
     .attr("fill", (d) => (d.value !== null ? colorScale(d.value) : "#eee"))
-    .attr("opacity", 0) // Start invisible
-    .transition() // Add animation
+    .attr("opacity", 0)
+    .transition()
     .duration(1000)
-    .delay((d, i) => i * 10) // Stagger animation
+    .delay((d, i) => i * 10)
     .ease(d3.easeQuadOut)
-    .attr("opacity", 1) // Fade in
-    .selection() // Return to selection for event handlers
+    .attr("opacity", 1)
+    .selection()
     .on("mouseover", function (event, d) {
       d3.select(this)
         .transition()
@@ -769,14 +769,13 @@ function init() {
       // Mise à jour du titre
       pageTitle.textContent = tabTitles[targetTab];
 
-      // Re-render des graphiques si nécessaire (pour D3)
+      // Chargement des graphiques D3
       if (targetTab === "analysis") {
         setTimeout(() => {
           const complexityChart = document.getElementById(
             "complexityTimeChart"
           );
           const heatmapChart = document.getElementById("solverFamilyHeatmap");
-          // Check if SVG already exists to avoid re-rendering if not needed
           if (complexityChart && !complexityChart.querySelector("svg")) {
             createComplexityTimeChart(data);
           }
@@ -788,18 +787,16 @@ function init() {
     });
   });
 
-  // Initialisation des graphiques de la vue d'ensemble
-  // Delay to ensure DOM is ready
+  // Initialisation
   setTimeout(() => {
     createStatusDistributionChart(data);
     createSolverSuccessRateChart(data);
   }, 100);
 
-  // Pré-chargement des autres graphiques
+  // Graphiques des autres onglets
   createSolverPerformanceChart(data);
   createFamilyRadarChart(data);
 
-  // Store chart instances for re-animation
   window.chartInstances = {
     statusDistribution: null,
     solverSuccessRate: null,
