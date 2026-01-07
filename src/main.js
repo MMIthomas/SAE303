@@ -95,6 +95,22 @@ function createSolverPerformanceChart(data) {
         duration: 1500,
         easing: "easeInOutQuart",
         delay: (context) => context.dataIndex * 100,
+        y: {
+          type: "number",
+          easing: "easeInOutQuart",
+          duration: 1000,
+          from: 0,
+        },
+        x: {
+          type: "number",
+          easing: "easeInOutQuart",
+          duration: 1000,
+          from: (ctx) => {
+            const xScale = ctx.chart.scales.x;
+            const barIndex = ctx.dataIndex;
+            return xScale.getPixelForValue(barIndex);
+          },
+        },
       },
       plugins: {
         title: {
