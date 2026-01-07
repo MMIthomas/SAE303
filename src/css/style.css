@@ -1,8 +1,19 @@
 body {
-  font-family: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.5;
   background-color: var(--color-background);
   color: var(--color-foreground);
+}
+
+/* Force Outfit sur tous les éléments Material Dashboard */
+* {
+  font-family: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+.card, .card-header, .card-body, .card-footer,
+.navbar, .nav-link, .sidenav,
+h1, h2, h3, h4, h5, h6, p, span, a, button {
+  font-family: 'Outfit', sans-serif !important;
 }
 
 #app {
