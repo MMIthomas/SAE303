@@ -1,8 +1,8 @@
-/* Styles de base pour la page d'accueil */
-
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.5;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
 }
 
 #app {
