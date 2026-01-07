@@ -91,6 +91,11 @@ function createSolverPerformanceChart(data) {
     },
     options: {
       responsive: true,
+      animation: {
+        duration: 1500,
+        easing: "easeInOutQuart",
+        delay: (context) => context.dataIndex * 100,
+      },
       plugins: {
         title: {
           display: true,
@@ -132,6 +137,12 @@ function createStatusDistributionChart(data) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      animation: {
+        animateRotate: true,
+        animateScale: true,
+        duration: 2000,
+        easing: "easeInOutQuart",
+      },
       plugins: {
         title: {
           display: true,
@@ -177,6 +188,11 @@ function createSolverSuccessRateChart(data) {
       responsive: true,
       maintainAspectRatio: false,
       indexAxis: "y",
+      animation: {
+        duration: 1800,
+        easing: "easeInOutCubic",
+        delay: (context) => context.dataIndex * 80,
+      },
       plugins: {
         title: {
           display: true,
@@ -273,10 +289,23 @@ function createComplexityTimeChart(data) {
     .append("circle")
     .attr("cx", (d) => xScale(parseFloat(d.nb_variables)))
     .attr("cy", (d) => yScale(parseFloat(d.time) || 0.1))
-    .attr("r", 4)
+    .attr("r", 0) // Start with radius 0
     .attr("fill", (d) => colorScale(d.name))
-    .attr("opacity", 0.7)
+    .attr("opacity", 0) // Start invisible
+    .transition() // Add animation
+    .duration(1500)
+    .delay((d, i) => i * 3) // Stagger animation
+    .ease(d3.easeCubicOut)
+    .attr("r", 4) // Animate to final radius
+    .attr("opacity", 0.7) // Animate to final opacity
+    .selection() // Return to selection for event handlers
     .on("mouseover", (event, d) => {
+      d3.select(event.currentTarget)
+        .transition()
+        .duration(200)
+        .attr("r", 6)
+        .attr("opacity", 1);
+
       tooltip
         .style("display", "block")
         .html(
@@ -288,7 +317,15 @@ function createComplexityTimeChart(data) {
         .style("left", event.pageX + 10 + "px")
         .style("top", event.pageY - 10 + "px");
     })
-    .on("mouseout", () => tooltip.style("display", "none"));
+    .on("mouseout", (event) => {
+      d3.select(event.currentTarget)
+        .transition()
+        .duration(200)
+        .attr("r", 4)
+        .attr("opacity", 0.7);
+
+      tooltip.style("display", "none");
+    });
 
   const legend = svg
     .append("g")
@@ -352,6 +389,10 @@ function createFamilyRadarChart(data) {
     },
     options: {
       responsive: true,
+      animation: {
+        duration: 2000,
+        easing: "easeInOutQuart",
+      },
       plugins: {
         title: {
           display: true,
@@ -440,7 +481,29 @@ function createSolverFamilyHeatmap(data) {
     .attr("y", (d) => yScale(d.solver))
     .attr("width", xScale.bandwidth())
     .attr("height", yScale.bandwidth())
-    .attr("fill", (d) => (d.value !== null ? colorScale(d.value) : "#eee"));
+    .attr("fill", (d) => (d.value !== null ? colorScale(d.value) : "#eee"))
+    .attr("opacity", 0) // Start invisible
+    .transition() // Add animation
+    .duration(1000)
+    .delay((d, i) => i * 10) // Stagger animation
+    .ease(d3.easeQuadOut)
+    .attr("opacity", 1) // Fade in
+    .selection() // Return to selection for event handlers
+    .on("mouseover", function (event, d) {
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .attr("opacity", 0.8)
+        .attr("stroke", "#452829")
+        .attr("stroke-width", 2);
+    })
+    .on("mouseout", function () {
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .attr("opacity", 1)
+        .attr("stroke", "none");
+    });
 }
 
 // Initialisation
@@ -726,13 +789,21 @@ function init() {
   });
 
   // Initialisation des graphiques de la vue d'ensemble
-  createStatusDistributionChart(data);
-  createSolverSuccessRateChart(data);
+  // Delay to ensure DOM is ready
+  setTimeout(() => {
+    createStatusDistributionChart(data);
+    createSolverSuccessRateChart(data);
+  }, 100);
 
   // Pré-chargement des autres graphiques
-  // These charts are created once, but their containers are hidden/shown
   createSolverPerformanceChart(data);
   createFamilyRadarChart(data);
+
+  // Store chart instances for re-animation
+  window.chartInstances = {
+    statusDistribution: null,
+    solverSuccessRate: null,
+  };
 }
 
 init();
