@@ -42,6 +42,11 @@ h1, h2, h3, h4, h5, h6, p, span:not(.material-icons), a, button {
   background: var(--color-primary);
 }
 
+.main-content {
+  margin-left: 17.125rem;
+  transition: margin-left 0.3s ease-in-out;
+}
+
 .sidenav .nav-link.active {
   background: var(--color-primary);
   color: var(--color-foreground);
@@ -161,6 +166,65 @@ canvas {
 
 @media (max-width: 1199.98px) {
   .main-content {
-    margin-left: 0;
+    margin-left: 0 !important;
+  }
+  
+  .sidenav {
+    position: fixed;
+    left: 0;
+    top: 1rem;
+    height: 96vh;
+    transform: translateX(-110%); /* Un peu plus que 100% pour être sûr */
+    transition: transform 0.3s ease-in-out;
+    z-index: 1050;
+  }
+  
+  .sidenav.show {
+    transform: translateX(0);
+  }
+  
+  /* Bouton hamburger toujours visible */
+  #toggleSidenav {
+    display: block !important;
+    z-index: 1060; /* Au-dessus de la sidebar */
+    position: relative;
+    color: var(--color-primary);
+  }
+}
+
+@media (min-width: 1200px) {
+  #toggleSidenav {
+    display: none !important;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .card-header h4 {
+    font-size: 1.25rem;
+  }
+  
+  .card-header .icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .card-header .icon .material-icons {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .navbar-main h6 {
+    font-size: 0.9rem;
+  }
+  
+  canvas {
+    max-height: 300px !important;
+  }
+  
+  #solverSuccessRateChart,
+  #statusDistributionChart {
+    min-height: 400px !important;
+    height: 400px !important;
   }
 }

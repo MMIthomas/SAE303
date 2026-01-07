@@ -639,6 +639,11 @@ function init() {
       <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
         <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur">
           <div class="container-fluid py-1 px-3">
+            <button class="navbar-toggler shadow-none ms-2" type="button" id="toggleSidenav" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon">
+                <i class="material-icons">menu</i>
+              </span>
+            </button>
             <nav aria-label="breadcrumb">
               <h6 class="font-weight-bolder mb-0" id="page-title">Vue d'ensemble - Visualisation des Solveurs CSP</h6>
             </nav>
@@ -823,6 +828,29 @@ function init() {
       </main>
     </div>
   `;
+
+  // Gestion de la sidebar
+  const toggleSidenav = document.getElementById("toggleSidenav");
+  const sidenav = document.getElementById("sidenav-main");
+
+  if (toggleSidenav) {
+    toggleSidenav.addEventListener("click", () => {
+      sidenav.classList.toggle("show");
+    });
+  }
+
+  // Fermer la sidebar quand on clique ailleurs sur mobile
+  document.addEventListener("click", (e) => {
+    if (window.innerWidth < 1200) {
+      if (
+        !sidenav.contains(e.target) &&
+        !toggleSidenav.contains(e.target) &&
+        sidenav.classList.contains("show")
+      ) {
+        sidenav.classList.remove("show");
+      }
+    }
+  });
 
   // Gestion des onglets
   const navLinks = document.querySelectorAll(".nav-link[data-tab]");
