@@ -127,7 +127,7 @@ Police : **Outfit** (Google Fonts)
 
 ## 📸 Captures d'écran
 
-![Aperçu du Dashboard](/readme-content.png)
+![Aperçu du Dashboard](/public/readme-content.png)
 
 ### Vue d'ensemble
 
