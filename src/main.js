@@ -451,36 +451,35 @@ function init() {
     <div class="wrapper">
       <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark" id="sidenav-main">
         <div class="sidenav-header">
-          <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
           <a class="navbar-brand m-0" href="#">
             <span class="ms-1 font-weight-bold text-white">SAE303 Dashboard</span>
           </a>
         </div>
         <hr class="horizontal light mt-0 mb-2">
-        <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+        <div class="collapse navbar-collapse w-auto show" id="sidenav-collapse-main">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link text-white active bg-gradient-primary" href="#">
+              <a class="nav-link text-white active bg-gradient-primary" href="#" data-tab="overview">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="material-icons opacity-10">dashboard</i>
                 </div>
-                <span class="nav-link-text ms-1">Dashboard</span>
+                <span class="nav-link-text ms-1">Vue d'ensemble</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="#">
+              <a class="nav-link text-white" href="#" data-tab="performance">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i class="material-icons opacity-10">table_view</i>
+                  <i class="material-icons opacity-10">speed</i>
                 </div>
-                <span class="nav-link-text ms-1">Solveurs</span>
+                <span class="nav-link-text ms-1">Performance</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="#">
+              <a class="nav-link text-white" href="#" data-tab="analysis">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i class="material-icons opacity-10">receipt_long</i>
+                  <i class="material-icons opacity-10">analytics</i>
                 </div>
-                <span class="nav-link-text ms-1">Résultats</span>
+                <span class="nav-link-text ms-1">Analyse avancée</span>
               </a>
             </li>
           </ul>
@@ -491,164 +490,181 @@ function init() {
         <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur">
           <div class="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
-              <h6 class="font-weight-bolder mb-0">Visualisation des Solveurs CSP</h6>
+              <h6 class="font-weight-bolder mb-0" id="page-title">Vue d'ensemble - Visualisation des Solveurs CSP</h6>
             </nav>
           </div>
         </nav>
         
         <div class="container-fluid py-4">
-          <div class="row">
-            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-              <div class="card">
-                <div class="card-header p-3 pt-2">
-                  <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                    <i class="material-icons opacity-10">weekend</i>
+          <!-- Vue d'ensemble -->
+          <div class="tab-content" id="overview-tab">
+            <div class="row">
+              <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                  <div class="card-header p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                      <i class="material-icons opacity-10">weekend</i>
+                    </div>
+                    <div class="text-end pt-1">
+                      <p class="text-sm mb-0 text-capitalize">Total Résultats</p>
+                      <h4 class="mb-0">${totalResults}</h4>
+                    </div>
                   </div>
-                  <div class="text-end pt-1">
-                    <p class="text-sm mb-0 text-capitalize">Total Résultats</p>
-                    <h4 class="mb-0">${totalResults}</h4>
+                  <hr class="dark horizontal my-0">
+                  <div class="card-footer p-3">
+                    <p class="mb-0"><span class="text-success text-sm font-weight-bolder">Compétition CSP 2022</span></p>
                   </div>
                 </div>
-                <hr class="dark horizontal my-0">
-                <div class="card-footer p-3">
-                  <p class="mb-0"><span class="text-success text-sm font-weight-bolder">Compétition CSP 2022</span></p>
+              </div>
+              
+              <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                  <div class="card-header p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+                      <i class="material-icons opacity-10">check_circle</i>
+                    </div>
+                    <div class="text-end pt-1">
+                      <p class="text-sm mb-0 text-capitalize">SAT</p>
+                      <h4 class="mb-0">${statusCounts.SAT}</h4>
+                    </div>
+                  </div>
+                  <hr class="dark horizontal my-0">
+                  <div class="card-footer p-3">
+                    <p class="mb-0"><span class="text-success text-sm font-weight-bolder">${(
+                      (statusCounts.SAT / totalResults) *
+                      100
+                    ).toFixed(1)}%</span> du total</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                  <div class="card-header p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-danger shadow-danger text-center border-radius-xl mt-n4 position-absolute">
+                      <i class="material-icons opacity-10">cancel</i>
+                    </div>
+                    <div class="text-end pt-1">
+                      <p class="text-sm mb-0 text-capitalize">UNSAT</p>
+                      <h4 class="mb-0">${statusCounts.UNSAT}</h4>
+                    </div>
+                  </div>
+                  <hr class="dark horizontal my-0">
+                  <div class="card-footer p-3">
+                    <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">${(
+                      (statusCounts.UNSAT / totalResults) *
+                      100
+                    ).toFixed(1)}%</span> du total</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-xl-3 col-sm-6">
+                <div class="card">
+                  <div class="card-header p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-warning shadow-warning text-center border-radius-xl mt-n4 position-absolute">
+                      <i class="material-icons opacity-10">help</i>
+                    </div>
+                    <div class="text-end pt-1">
+                      <p class="text-sm mb-0 text-capitalize">UNKNOWN</p>
+                      <h4 class="mb-0">${statusCounts.UNKNOWN}</h4>
+                    </div>
+                  </div>
+                  <hr class="dark horizontal my-0">
+                  <div class="card-footer p-3">
+                    <p class="mb-0"><span class="text-warning text-sm font-weight-bolder">${(
+                      (statusCounts.UNKNOWN / totalResults) *
+                      100
+                    ).toFixed(1)}%</span> du total</p>
+                  </div>
                 </div>
               </div>
             </div>
             
-            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-              <div class="card">
-                <div class="card-header p-3 pt-2">
-                  <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                    <i class="material-icons opacity-10">check_circle</i>
+            <div class="row mt-4">
+              <div class="col-lg-6 col-md-6 mb-md-0 mb-4">
+                <div class="card">
+                  <div class="card-header pb-0">
+                    <h6>Répartition des résultats</h6>
+                    <p class="text-sm">Distribution globale des statuts SAT, UNSAT et UNKNOWN</p>
                   </div>
-                  <div class="text-end pt-1">
-                    <p class="text-sm mb-0 text-capitalize">SAT</p>
-                    <h4 class="mb-0">${statusCounts.SAT}</h4>
+                  <div class="card-body px-0 pb-2">
+                    <canvas id="statusDistributionChart"></canvas>
                   </div>
-                </div>
-                <hr class="dark horizontal my-0">
-                <div class="card-footer p-3">
-                  <p class="mb-0"><span class="text-success text-sm font-weight-bolder">${(
-                    (statusCounts.SAT / totalResults) *
-                    100
-                  ).toFixed(1)}%</span> du total</p>
                 </div>
               </div>
-            </div>
-            
-            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-              <div class="card">
-                <div class="card-header p-3 pt-2">
-                  <div class="icon icon-lg icon-shape bg-gradient-danger shadow-danger text-center border-radius-xl mt-n4 position-absolute">
-                    <i class="material-icons opacity-10">cancel</i>
+              
+              <div class="col-lg-6 col-md-6">
+                <div class="card">
+                  <div class="card-header pb-0">
+                    <h6>Taux de résolution par solveur</h6>
+                    <p class="text-sm">Pourcentage de succès de chaque solveur</p>
                   </div>
-                  <div class="text-end pt-1">
-                    <p class="text-sm mb-0 text-capitalize">UNSAT</p>
-                    <h4 class="mb-0">${statusCounts.UNSAT}</h4>
+                  <div class="card-body px-0 pb-2">
+                    <canvas id="solverSuccessRateChart"></canvas>
                   </div>
-                </div>
-                <hr class="dark horizontal my-0">
-                <div class="card-footer p-3">
-                  <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">${(
-                    (statusCounts.UNSAT / totalResults) *
-                    100
-                  ).toFixed(1)}%</span> du total</p>
-                </div>
-              </div>
-            </div>
-            
-            <div class="col-xl-3 col-sm-6">
-              <div class="card">
-                <div class="card-header p-3 pt-2">
-                  <div class="icon icon-lg icon-shape bg-gradient-warning shadow-warning text-center border-radius-xl mt-n4 position-absolute">
-                    <i class="material-icons opacity-10">help</i>
-                  </div>
-                  <div class="text-end pt-1">
-                    <p class="text-sm mb-0 text-capitalize">UNKNOWN</p>
-                    <h4 class="mb-0">${statusCounts.UNKNOWN}</h4>
-                  </div>
-                </div>
-                <hr class="dark horizontal my-0">
-                <div class="card-footer p-3">
-                  <p class="mb-0"><span class="text-warning text-sm font-weight-bolder">${(
-                    (statusCounts.UNKNOWN / totalResults) *
-                    100
-                  ).toFixed(1)}%</span> du total</p>
                 </div>
               </div>
             </div>
           </div>
           
-          <div class="row mt-4">
-            <div class="col-lg-6 col-md-6 mb-md-0 mb-4">
-              <div class="card">
-                <div class="card-header pb-0">
-                  <h6>Temps moyen de résolution</h6>
-                </div>
-                <div class="card-body px-0 pb-2">
-                  <canvas id="solverPerformanceChart"></canvas>
-                </div>
-              </div>
-            </div>
-            
-            <div class="col-lg-6 col-md-6">
-              <div class="card">
-                <div class="card-header pb-0">
-                  <h6>Répartition des résultats</h6>
-                </div>
-                <div class="card-body px-0 pb-2">
-                  <canvas id="statusDistributionChart"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="row mt-4">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-header pb-0">
-                  <h6>Taux de résolution par solveur</h6>
-                </div>
-                <div class="card-body px-0 pb-2">
-                  <canvas id="solverSuccessRateChart"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="row mt-4">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-header pb-0">
-                  <h6>Complexité vs Temps de résolution</h6>
-                </div>
-                <div class="card-body px-0 pb-2">
-                  <div id="complexityTimeChart"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="row mt-4">
-            <div class="col-lg-6 col-md-6 mb-md-0 mb-4">
-              <div class="card">
-                <div class="card-header pb-0">
-                  <h6>Performance par famille</h6>
-                </div>
-                <div class="card-body px-0 pb-2">
-                  <canvas id="familyRadarChart"></canvas>
+          <!-- Performance -->
+          <div class="tab-content" id="performance-tab" style="display: none;">
+            <div class="row">
+              <div class="col-12 mb-4">
+                <div class="card">
+                  <div class="card-header pb-0">
+                    <h6>Temps moyen de résolution par solveur</h6>
+                    <p class="text-sm">Comparaison des performances temporelles de chaque solveur</p>
+                  </div>
+                  <div class="card-body px-0 pb-2">
+                    <canvas id="solverPerformanceChart"></canvas>
+                  </div>
                 </div>
               </div>
             </div>
             
-            <div class="col-lg-6 col-md-6">
-              <div class="card">
-                <div class="card-header pb-0">
-                  <h6>Heatmap Solveur × Famille</h6>
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header pb-0">
+                    <h6>Performance par famille de problèmes</h6>
+                    <p class="text-sm">Analyse comparative des solveurs sur différentes familles</p>
+                  </div>
+                  <div class="card-body px-0 pb-2">
+                    <canvas id="familyRadarChart"></canvas>
+                  </div>
                 </div>
-                <div class="card-body px-0 pb-2">
-                  <div id="solverFamilyHeatmap"></div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Analyse avancée -->
+          <div class="tab-content" id="analysis-tab" style="display: none;">
+            <div class="row">
+              <div class="col-12 mb-4">
+                <div class="card">
+                  <div class="card-header pb-0">
+                    <h6>Complexité vs Temps de résolution</h6>
+                    <p class="text-sm">Relation entre le nombre de variables et le temps d'exécution</p>
+                  </div>
+                  <div class="card-body px-0 pb-2">
+                    <div id="complexityTimeChart"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header pb-0">
+                    <h6>Heatmap Solveur × Famille</h6>
+                    <p class="text-sm">Matrice de performance croisée solveurs/familles</p>
+                  </div>
+                  <div class="card-body px-0 pb-2">
+                    <div id="solverFamilyHeatmap"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -658,12 +674,63 @@ function init() {
     </div>
   `;
 
-  createSolverPerformanceChart(data);
+  // Gestion des onglets
+  const navLinks = document.querySelectorAll(".nav-link[data-tab]");
+  const pageTitle = document.getElementById("page-title");
+
+  const tabTitles = {
+    overview: "Vue d'ensemble - Visualisation des Solveurs CSP",
+    performance: "Performance - Analyse temporelle des solveurs",
+    analysis: "Analyse avancée - Visualisations complexes",
+  };
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const targetTab = link.getAttribute("data-tab");
+
+      // Mise à jour des liens actifs
+      navLinks.forEach((l) =>
+        l.classList.remove("active", "bg-gradient-primary")
+      );
+      link.classList.add("active", "bg-gradient-primary");
+
+      // Affichage du bon contenu
+      document.querySelectorAll(".tab-content").forEach((tab) => {
+        tab.style.display = "none";
+      });
+      document.getElementById(`${targetTab}-tab`).style.display = "block";
+
+      // Mise à jour du titre
+      pageTitle.textContent = tabTitles[targetTab];
+
+      // Re-render des graphiques si nécessaire (pour D3)
+      if (targetTab === "analysis") {
+        setTimeout(() => {
+          const complexityChart = document.getElementById(
+            "complexityTimeChart"
+          );
+          const heatmapChart = document.getElementById("solverFamilyHeatmap");
+          // Check if SVG already exists to avoid re-rendering if not needed
+          if (complexityChart && !complexityChart.querySelector("svg")) {
+            createComplexityTimeChart(data);
+          }
+          if (heatmapChart && !heatmapChart.querySelector("svg")) {
+            createSolverFamilyHeatmap(data);
+          }
+        }, 100);
+      }
+    });
+  });
+
+  // Initialisation des graphiques de la vue d'ensemble
   createStatusDistributionChart(data);
   createSolverSuccessRateChart(data);
-  createComplexityTimeChart(data);
+
+  // Pré-chargement des autres graphiques
+  // These charts are created once, but their containers are hidden/shown
+  createSolverPerformanceChart(data);
   createFamilyRadarChart(data);
-  createSolverFamilyHeatmap(data);
 }
 
 init();
