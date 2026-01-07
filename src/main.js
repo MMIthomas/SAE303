@@ -131,6 +131,7 @@ function createStatusDistributionChart(data) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         title: {
           display: true,
@@ -174,6 +175,7 @@ function createSolverSuccessRateChart(data) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       indexAxis: "y",
       plugins: {
         title: {

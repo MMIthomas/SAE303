@@ -108,6 +108,21 @@ canvas {
   max-height: 350px;
 }
 
+#solverSuccessRateChart {
+  min-height: 500px;
+}
+
+#solverSuccessRateChart {
+  max-height: 500px !important;
+  height: 500px;
+}
+
+#statusDistributionChart {
+  min-height: 500px;
+  max-height: 500px !important;
+  height: 500px;
+}
+
 #complexityTimeChart svg,
 #solverFamilyHeatmap svg {
   display: block;
