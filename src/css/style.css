@@ -190,6 +190,13 @@ canvas {
     position: relative;
     color: var(--color-primary);
   }
+
+  /* Afficher l'icône de fermeture sur mobile */
+  #iconSidenav {
+    display: block !important;
+    color: white !important;
+    opacity: 0.8 !important;
+  }
 }
 
 @media (min-width: 1200px) {
