@@ -1,3 +1,4 @@
+import "material-dashboard/assets/css/material-dashboard.min.css";
 import "./css/variables.css";
 import "./css/reset.css";
 import "./css/style.css";
@@ -443,32 +444,217 @@ function createSolverFamilyHeatmap(data) {
 // Initialisation
 function init() {
   const data = getValidResults();
+  const totalResults = data.length;
+  const statusCounts = getStatusCounts(data);
 
   document.querySelector("#app").innerHTML = `
-    <div class="dashboard">
-      <h1>SAE303 - Visualisation des Solveurs CSP</h1>
+    <div class="wrapper">
+      <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark" id="sidenav-main">
+        <div class="sidenav-header">
+          <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+          <a class="navbar-brand m-0" href="#">
+            <span class="ms-1 font-weight-bold text-white">SAE303 Dashboard</span>
+          </a>
+        </div>
+        <hr class="horizontal light mt-0 mb-2">
+        <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link text-white active bg-gradient-primary" href="#">
+                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                  <i class="material-icons opacity-10">dashboard</i>
+                </div>
+                <span class="nav-link-text ms-1">Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#">
+                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                  <i class="material-icons opacity-10">table_view</i>
+                </div>
+                <span class="nav-link-text ms-1">Solveurs</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#">
+                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                  <i class="material-icons opacity-10">receipt_long</i>
+                </div>
+                <span class="nav-link-text ms-1">Résultats</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
       
-      <div class="charts-grid">
-        <div class="chart-container">
-          <canvas id="solverPerformanceChart"></canvas>
+      <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+        <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur">
+          <div class="container-fluid py-1 px-3">
+            <nav aria-label="breadcrumb">
+              <h6 class="font-weight-bolder mb-0">Visualisation des Solveurs CSP</h6>
+            </nav>
+          </div>
+        </nav>
+        
+        <div class="container-fluid py-4">
+          <div class="row">
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+              <div class="card">
+                <div class="card-header p-3 pt-2">
+                  <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                    <i class="material-icons opacity-10">weekend</i>
+                  </div>
+                  <div class="text-end pt-1">
+                    <p class="text-sm mb-0 text-capitalize">Total Résultats</p>
+                    <h4 class="mb-0">${totalResults}</h4>
+                  </div>
+                </div>
+                <hr class="dark horizontal my-0">
+                <div class="card-footer p-3">
+                  <p class="mb-0"><span class="text-success text-sm font-weight-bolder">Compétition CSP 2022</span></p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+              <div class="card">
+                <div class="card-header p-3 pt-2">
+                  <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+                    <i class="material-icons opacity-10">check_circle</i>
+                  </div>
+                  <div class="text-end pt-1">
+                    <p class="text-sm mb-0 text-capitalize">SAT</p>
+                    <h4 class="mb-0">${statusCounts.SAT}</h4>
+                  </div>
+                </div>
+                <hr class="dark horizontal my-0">
+                <div class="card-footer p-3">
+                  <p class="mb-0"><span class="text-success text-sm font-weight-bolder">${(
+                    (statusCounts.SAT / totalResults) *
+                    100
+                  ).toFixed(1)}%</span> du total</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+              <div class="card">
+                <div class="card-header p-3 pt-2">
+                  <div class="icon icon-lg icon-shape bg-gradient-danger shadow-danger text-center border-radius-xl mt-n4 position-absolute">
+                    <i class="material-icons opacity-10">cancel</i>
+                  </div>
+                  <div class="text-end pt-1">
+                    <p class="text-sm mb-0 text-capitalize">UNSAT</p>
+                    <h4 class="mb-0">${statusCounts.UNSAT}</h4>
+                  </div>
+                </div>
+                <hr class="dark horizontal my-0">
+                <div class="card-footer p-3">
+                  <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">${(
+                    (statusCounts.UNSAT / totalResults) *
+                    100
+                  ).toFixed(1)}%</span> du total</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6">
+              <div class="card">
+                <div class="card-header p-3 pt-2">
+                  <div class="icon icon-lg icon-shape bg-gradient-warning shadow-warning text-center border-radius-xl mt-n4 position-absolute">
+                    <i class="material-icons opacity-10">help</i>
+                  </div>
+                  <div class="text-end pt-1">
+                    <p class="text-sm mb-0 text-capitalize">UNKNOWN</p>
+                    <h4 class="mb-0">${statusCounts.UNKNOWN}</h4>
+                  </div>
+                </div>
+                <hr class="dark horizontal my-0">
+                <div class="card-footer p-3">
+                  <p class="mb-0"><span class="text-warning text-sm font-weight-bolder">${(
+                    (statusCounts.UNKNOWN / totalResults) *
+                    100
+                  ).toFixed(1)}%</span> du total</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-4">
+            <div class="col-lg-6 col-md-6 mb-md-0 mb-4">
+              <div class="card">
+                <div class="card-header pb-0">
+                  <h6>Temps moyen de résolution</h6>
+                </div>
+                <div class="card-body px-0 pb-2">
+                  <canvas id="solverPerformanceChart"></canvas>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-lg-6 col-md-6">
+              <div class="card">
+                <div class="card-header pb-0">
+                  <h6>Répartition des résultats</h6>
+                </div>
+                <div class="card-body px-0 pb-2">
+                  <canvas id="statusDistributionChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header pb-0">
+                  <h6>Taux de résolution par solveur</h6>
+                </div>
+                <div class="card-body px-0 pb-2">
+                  <canvas id="solverSuccessRateChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header pb-0">
+                  <h6>Complexité vs Temps de résolution</h6>
+                </div>
+                <div class="card-body px-0 pb-2">
+                  <div id="complexityTimeChart"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-4">
+            <div class="col-lg-6 col-md-6 mb-md-0 mb-4">
+              <div class="card">
+                <div class="card-header pb-0">
+                  <h6>Performance par famille</h6>
+                </div>
+                <div class="card-body px-0 pb-2">
+                  <canvas id="familyRadarChart"></canvas>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-lg-6 col-md-6">
+              <div class="card">
+                <div class="card-header pb-0">
+                  <h6>Heatmap Solveur × Famille</h6>
+                </div>
+                <div class="card-body px-0 pb-2">
+                  <div id="solverFamilyHeatmap"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <div class="chart-container">
-          <canvas id="statusDistributionChart"></canvas>
-        </div>
-        
-        <div class="chart-container wide">
-          <canvas id="solverSuccessRateChart"></canvas>
-        </div>
-        
-        <div class="chart-container wide" id="complexityTimeChart"></div>
-        
-        <div class="chart-container">
-          <canvas id="familyRadarChart"></canvas>
-        </div>
-        
-        <div class="chart-container wide" id="solverFamilyHeatmap"></div>
-      </div>
+      </main>
     </div>
   `;
 
